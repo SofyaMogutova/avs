@@ -1,0 +1,32 @@
+#!/bin/bash
+echo -ne "Дата:\t"
+date
+echo -ne "Имя учётной записи:\t"
+whoami
+echo -ne "Доменное имя пк:\t"
+hostname
+
+echo "Процессор:"
+lscpu | grep 'Модель'
+lscpu | grep 'Архитектура'
+lscpu | grep 'CPU МГц'
+echo -ne "Количество ядер:\t\t"
+nproc
+lscpu | grep 'Потоков на ядро'
+echo
+
+echo "Оперативная память:"
+cat /proc/meminfo | grep 'MemTotal'
+cat /proc/meminfo | grep 'MemAvailable'
+echo
+
+echo "Жесткий диск:"
+
+echo "Сетевые интерфейсы:\t"
+ls /sys/class/net/ | wc -l
+echo "--Имя сетевого интерфейса--"
+ifconfig -a | grep flags | gawk '{print $1}'
+echo "--MAC-адрес--"
+ifconfig -a | grep ether | gawk '{print $2}'
+echo "--IP-адрес--"
+ifconfig -a | grep inet | gawk '{print $2}'
