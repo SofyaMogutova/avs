@@ -1,0 +1,52 @@
+#!/bin/bash
+echo -ne "Дата:\t"
+date
+echo -ne "Имя учётной записи:\t"
+whoami
+echo -ne "Доменное имя пк:\t"
+hostname
+
+echo "Процессор:"
+lscpu | grep 'Имя модели'
+lscpu | grep 'Архитектура'
+lscpu | grep 'CPU MHz'
+echo -ne "Количество ядер:\t\t"
+nproc
+lscpu | grep 'Thread'
+echo
+
+echo "Оперативная память:"
+cat /proc/meminfo | grep 'MemTotal'
+cat /proc/meminfo | grep 'MemAvailable'
+echo
+
+echo "Жесткий диск:"
+echo -ne "Всего:"
+df --output=source,size -h --total | grep total | gawk '{print $2}'
+echo -ne "Доступно:"
+df --output=source,avail -h --total | grep total | gawk '{print $2}'
+echo -ne "Смонтировано в корневую директорию:\t"
+df --output=target -h --total | grep total -c
+
+echo -ne "SWAP всего:"
+mount | grep swap -c
+echo -ne "SWAP доступно:"
+mount | grep swap -c
+echo
+echo "Сетевые интерфейсы:"
+echo -ne "Количество сетевых интерфейсов:\t"
+ifconfig | grep -w "inet" -c
+echo
+ip -o -4 address | gawk '{print $1 $2 $4}'
+echo "--Имя сетевого интерфейса--"
+ifconfig -a | grep flags | gawk '{print $1}'
+echo
+echo "--MAC-адрес--"
+ifconfig -a | grep ether | gawk '{print $2}'
+echo
+echo "--IP-адрес--"
+ifconfig -a | grep -w "inet" | gawk '{print $2}'
+echo
+echo "--Скорость соединения--"
+
+
