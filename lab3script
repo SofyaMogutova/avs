@@ -1,0 +1,14 @@
+#!/bin/bash
+echo "MemoryType;BlockSize;ElementType;BufferSize;LaunchNum;Timer;WriteTime;AverageWriteTime;WriteBandWidth;AbsError(write);RelError(write);ReadTime;AverageReadTime;ReadBandWidth;AbsError(read);RelError(read)" > lab3.csv
+./lab3 -m RAM -b 64 -l 10
+./lab3 -m RAM -b 256kb -l 10
+./lab3 -m RAM -b 1Mb -l 10
+./lab3 -m RAM -b 6Mb -l 10
+./lab3 -m RAM -b 20Mb -l 10
+size=4
+for((i=0;i<20;i++))
+do
+./lab3 -m SSD -b ${size}Mb -l 10
+./lab3 -m flash -b ${size}Mb -l 10
+size=$((size+4))
+done
